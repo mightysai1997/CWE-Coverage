@@ -1,18 +1,16 @@
 // Insecure code example - Prototype Pollution
-class User {
-    constructor(public username: string) {}
+function updateUserSettings(userSettings: any, newData: any): void {
+    Object.assign(userSettings, newData);
 }
 
-const user = new User("john_doe");
+// Source of user input (potentially from an untrusted source)
+const userInput = JSON.parse('{"__proto__": {"isAdmin": true}}');
 
-// Attacker-controlled input
-const maliciousInput = '{"__proto__": {"isAdmin": true}}';
+// User settings object
+const userSettings = { username: 'john_doe', isAdmin: false };
 
-// Parse the attacker-controlled input
-const parsedInput = JSON.parse(maliciousInput);
+// Insecure usage of user input
+updateUserSettings(userSettings, userInput);
 
-// Prototype pollution occurs here
-Object.assign(user, parsedInput);
-
-// Check if the user is an admin
-console.log(`Is user an admin? ${user.isAdmin}`); // Outputs: "Is user an admin? true"
+// Sink - Using the modified user settings
+console.log(`User isAdmin: ${userSettings.isAdmin}`);
