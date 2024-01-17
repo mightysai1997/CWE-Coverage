@@ -1,29 +1,18 @@
-import * as crypto from 'crypto';
-
-class InsecureCryptoExample {
-    private static secretKey: string = 'InsecureSecretKey';
-
-    // Insecure encryption using a hardcoded key
-    static encryptData(data: string): string {
-        const cipher = crypto.createCipher('aes-256-cbc', this.secretKey);
-        let encryptedData = cipher.update(data, 'utf-8', 'hex');
-        encryptedData += cipher.final('hex');
-        return encryptedData;
-    }
-
-    // Insecure decryption using a hardcoded key
-    static decryptData(encryptedData: string): string {
-        const decipher = crypto.createDecipher('aes-256-cbc', this.secretKey);
-        let decryptedData = decipher.update(encryptedData, 'hex', 'utf-8');
-        decryptedData += decipher.final('utf-8');
-        return decryptedData;
-    }
+// Insecure code example - Prototype Pollution
+class User {
+    constructor(public username: string) {}
 }
 
-// Usage of the insecure crypto functions
-const sensitiveData = 'ThisIsSensitive';
-const encryptedData = InsecureCryptoExample.encryptData(sensitiveData);
-console.log('Encrypted Data:', encryptedData);
+const user = new User("john_doe");
 
-const decryptedData = InsecureCryptoExample.decryptData(encryptedData);
-console.log('Decrypted Data:', decryptedData);
+// Attacker-controlled input
+const maliciousInput = '{"__proto__": {"isAdmin": true}}';
+
+// Parse the attacker-controlled input
+const parsedInput = JSON.parse(maliciousInput);
+
+// Prototype pollution occurs here
+Object.assign(user, parsedInput);
+
+// Check if the user is an admin
+console.log(`Is user an admin? ${user.isAdmin}`); // Outputs: "Is user an admin? true"
