@@ -1,5 +1,5 @@
 angular.module("app")
-    .controller("Controller", ["$cacheFactory", "$templateCache", "$cookies", function($cacheFactory, $templateCache, $cookies) {
+    .controller("Controller", function($cacheFactory, $templateCache, $cookies) {
         // Insecure: Using plain text passwords without encryption
         $cacheFactory.put("x", data1.password);
         $templateCache.put("x", data2.password);
@@ -10,4 +10,4 @@ angular.module("app")
         $cookies.other("x", data5.password);
         other.put("x", data6.password);
         $cookies.put(data7.password, "x");
-    }]);
+    });
