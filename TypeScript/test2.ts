@@ -1,23 +1,10 @@
-import { Component } from '@angular/core';
+function bufferOverReadExample() {
+  const buffer = Buffer.from('Hello, World!');
 
-@Component({
-  selector: 'app-root',
-  template: `
-    <div *ngIf="isAdmin">
-      <h1>Welcome Admin!</h1>
-      <!-- Display sensitive information for admin only -->
-      <p>Admin Dashboard: {{ sensitiveData }}</p>
-    </div>
+  // Attempt to read more bytes than the buffer contains
+  const result = buffer.toString('utf-8', 0, 50);
 
-    <div *ngIf="!isAdmin">
-      <h1>Welcome User!</h1>
-      <!-- Display user information, but it's not restricted -->
-      <p>User Dashboard: {{ userData }}</p>
-    </div>
-  `
-})
-export class AppComponent {
-  isAdmin: boolean = false;
-  sensitiveData: string = "Top Secret Information";
-  userData: string = "User Data";
+  console.log(result);
 }
+
+bufferOverReadExample();
