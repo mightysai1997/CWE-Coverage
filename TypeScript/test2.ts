@@ -5,13 +5,10 @@ app.on('ready', () => {
     width: 800,
     height: 600,
     webPreferences: {
-      nodeIntegration: true,
+      nodeIntegration: true, // Insecure setting
+      contextIsolation: false, // Insecure setting
+      webSecurity: false, // Insecure setting
     },
-  });
-
-  // Disable web security (This is a security vulnerability)
-  mainWindow.webContents.session.webRequest.onHeadersReceived((details, callback) => {
-    callback({ responseHeaders: { ...details.responseHeaders, 'Content-Security-Policy': ['default-src \'self\''] } });
   });
 
   mainWindow.loadFile('index.html');
