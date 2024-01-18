@@ -1,30 +1,18 @@
-import { Observable, of } from 'rxjs';
-import { delay } from 'rxjs/operators';
+const { app, BrowserWindow } = require('electron');
 
-// Simulating a function that checks if a user is authenticated
-function checkAuthentication(username: string, password: string): Observable<boolean> {
-  const startTime = Date.now();
+app.on('ready', () => {
+  const mainWindow = new BrowserWindow({
+    width: 800,
+    height: 600,
+    webPreferences: {
+      nodeIntegration: true,
+    },
+  });
 
-  // Simulating an asynchronous operation, e.g., checking credentials against a database
-  return of(checkCredentials(username, password)).pipe(
-    delay(500) // Simulating some delay in the operation
-  );
-}
+  // Disable web security (This is a security vulnerability)
+  mainWindow.webContents.session.webRequest.onHeadersReceived((details, callback) => {
+    callback({ responseHeaders: { ...details.responseHeaders, 'Content-Security-Policy': ['default-src \'self\''] } });
+  });
 
-// Simulating a function that checks user credentials (for illustration purposes)
-function checkCredentials(username: string, password: string): boolean {
-  // Check credentials (this is a simplified example)
-  return username === 'admin' && password === 'password';
-}
-
-// Example usage
-const username = 'admin';
-const password = 'password123';
-
-checkAuthentication(username, password).subscribe((result) => {
-  if (result) {
-    console.log('Authentication successful');
-  } else {
-    console.log('Authentication failed');
-  }
+  mainWindow.loadFile('index.html');
 });
