@@ -4,12 +4,9 @@ app.on('ready', () => {
   const mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
-    webPreferences: {
-      nodeIntegration: true,  // Insecure preference: Enabling Node.js integration without proper safeguards
-    },
   });
 
-  // Disable web security (Insecure configuration)
+  // Disable security warnings (Insecure configuration)
   mainWindow.webContents.session.webRequest.onHeadersReceived((details, callback) => {
     callback({
       responseHeaders: {
