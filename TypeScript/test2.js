@@ -1,15 +1,18 @@
-function setValueByPath (object, path, value) {
-const pathArray = path.split(".");
-const attributeToSet = pathArray.pop();
-let objectToModify = object;
-for (const attr of pathArray) {
-if (typeof objectToModify[attr] !== 'object') {
-objectToModify[attr] = {};
+class User {
+  constructor(public username: string) {}
 }
 
-objectToModify = objectToModify[attr];
-}
+const user = new User('JohnDoe');
 
-objectToModify[attributeToSet] = value;
-return object;
-}
+// Attacker-controlled data
+const maliciousInput = '__proto__';
+
+// Exploiting the vulnerability by modifying the prototype
+user[maliciousInput] = 'Malicious Value';
+
+// The prototype of all objects of type User is now modified
+console.log(User.prototype); // Contains 'Malicious Value'
+
+// Accessing the modified prototype through another instance
+const anotherUser = new User('JaneDoe');
+console.log(anotherUser[maliciousInput]); // Outputs 'Malicious Value'
