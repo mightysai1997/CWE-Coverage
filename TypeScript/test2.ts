@@ -1,14 +1,23 @@
-import * as crypto from 'crypto';
+import { Component } from '@angular/core';
 
-// Weak cryptographic hashing function (for educational purposes only)
-function weakHash(password: string): string {
-  const hash = crypto.createHash('md5'); // MD5 is considered weak and should not be used for hashing passwords
-  return hash.update(password).digest('hex');
+@Component({
+  selector: 'app-root',
+  template: `
+    <div *ngIf="isAdmin">
+      <h1>Welcome Admin!</h1>
+      <!-- Display sensitive information for admin only -->
+      <p>Admin Dashboard: {{ sensitiveData }}</p>
+    </div>
+
+    <div *ngIf="!isAdmin">
+      <h1>Welcome User!</h1>
+      <!-- Display user information, but it's not restricted -->
+      <p>User Dashboard: {{ userData }}</p>
+    </div>
+  `
+})
+export class AppComponent {
+  isAdmin: boolean = false;
+  sensitiveData: string = "Top Secret Information";
+  userData: string = "User Data";
 }
-
-// Example of using the weakHash function
-const userPassword = 'securePassword123';
-const hashedPassword = weakHash(userPassword);
-
-console.log(`Original Password: ${userPassword}`);
-console.log(`Weak Hashed Password: ${hashedPassword}`);
