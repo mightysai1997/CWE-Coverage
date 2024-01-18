@@ -1,18 +1,23 @@
-class User {
-  constructor(public username: string) {}
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-root',
+  template: `
+    <div *ngIf="isAdmin">
+      <h1>Welcome Admin!</h1>
+      <!-- Display sensitive information for admin only -->
+      <p>Admin Dashboard: {{ sensitiveData }}</p>
+    </div>
+
+    <div>
+      <h1>Welcome User!</h1>
+      <!-- Display user information, but it's not restricted -->
+      <p>User Dashboard: {{ userData }}</p>
+    </div>
+  `
+})
+export class AppComponent {
+  isAdmin: boolean = false;
+  sensitiveData: string = "Top Secret Information";
+  userData: string = "User Data";
 }
-
-const user = new User('JohnDoe');
-
-// Attacker-controlled data
-const maliciousInput = '__proto__';
-
-// Exploiting the vulnerability by modifying the prototype
-user[maliciousInput] = 'Malicious Value';
-
-// The prototype of all objects of type User is now modified
-console.log(User.prototype); // Contains 'Malicious Value'
-
-// Accessing the modified prototype through another instance
-const anotherUser = new User('JaneDoe');
-console.log(anotherUser[maliciousInput]); // Outputs 'Malicious Value'
