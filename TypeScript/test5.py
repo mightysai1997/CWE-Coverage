@@ -1,3 +1,6 @@
+from cryptography.hazmat.primitives import hashes, hmac
+import secrets
+
 def cryptography_noncompliant():
     from cryptography.hazmat.primitives import hashes, hmac
     import secrets
