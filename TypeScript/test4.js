@@ -2,15 +2,20 @@ var express = require('express')
 
 var app = express()
 
-function improperRestrictionOfFramesCompliant() {
+var compare = require('secure-compare')
 
-    app.use((req, res) => {
 
-        var host = req.query.opts
+function timingAttackCompliant() {
 
-        // Compliant: it has safe `X-Frame-Options` header.
+    app.get('/user/login', function (req, res) {
 
-        res.setHeader("X-Frame-Options", "https://example.com")
+        // Compliant: sensitive data field is compared using 'secure-compare'.
+
+        if(compare(password, "myPass")) {
+
+            logIn()
+
+        }
 
     })
 
