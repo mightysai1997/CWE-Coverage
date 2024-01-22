@@ -1,21 +1,16 @@
-import express, {Request, Response} from 'express'
+import ESAPI from 'node-esapi'
 
-var app = express()
 
-var compare = require("secure-compare");
+function crossSiteScriptingCompliant() {
 
-function timingAttackCompliant() {
+  let url = window.location.search.slice(1)
 
-  app.get("/user/login", function (req: Request, res: Response) {
 
-    // Compliant: sensitive data field is compared using 'secure-compare'.
+  // Compliant: url is sanitized before ajax call.
 
-    if (compare(password, "myPass")) {
+  url = ESAPI.encoder().encodeForURL(url)
 
-      //
 
-    }
-
-  });
+  $.ajax({url: url, data: "Hello"})
 
 }
