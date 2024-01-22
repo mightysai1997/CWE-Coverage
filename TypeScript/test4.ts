@@ -1,8 +1,8 @@
 import * as crypto from 'crypto';
 
-// Generate RSA key pair with 2048-bit key size
-const { publicKey, privateKey } = crypto.generateKeyPairSync('rsa', {
-  modulusLength: 2048,
+// Create a KeyPairGenerator equivalent in TypeScript
+const keyPairGen1 = crypto.generateKeyPairSync('rsa', {
+  modulusLength: 1024, // BAD: Key size is less than 2048
   publicKeyEncoding: {
     type: 'spki',
     format: 'pem',
@@ -13,5 +13,5 @@ const { publicKey, privateKey } = crypto.generateKeyPairSync('rsa', {
   },
 });
 
-console.log('Public Key:', publicKey);
-console.log('Private Key:', privateKey);
+console.log('Public Key:', keyPairGen1.publicKey);
+console.log('Private Key:', keyPairGen1.privateKey);
