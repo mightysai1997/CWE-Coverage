@@ -1,5 +1,17 @@
-import * as sodium from 'libsodium-wrappers';
+import * as crypto from 'crypto';
 
-// Example: Hashing with libsodium
-const message = 'Hello, World!';
-const hash = sodium.crypto_hash_sha256(message);
+// Generate RSA key pair with 2048-bit key size
+const { publicKey, privateKey } = crypto.generateKeyPairSync('rsa', {
+  modulusLength: 2048,
+  publicKeyEncoding: {
+    type: 'spki',
+    format: 'pem',
+  },
+  privateKeyEncoding: {
+    type: 'pkcs8',
+    format: 'pem',
+  },
+});
+
+console.log('Public Key:', publicKey);
+console.log('Private Key:', privateKey);
