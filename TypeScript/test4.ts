@@ -1,6 +1,20 @@
 import * as readlineSync from 'readline-sync';
 
-const buffer: Buffer = Buffer.alloc(10);
-const bytesRead: number = process.stdin.readSync(buffer, 0, 15);
+const PASSWORD_FILE: string = 'rictro';
 
-console.log(buffer.toString());
+const input: string = readlineSync.question('Enter password: ');
+
+let password: string = '';
+
+// Intentional buffer overread vulnerability
+// Attempting to read more characters from PASSWORD_FILE than the size of the 'password' buffer
+password = PASSWORD_FILE.substr(0, 10);
+
+// Debug prints:
+// console.log(`Input: ${input}`);
+// console.log(`Password: ${password}`);
+
+if (password === input)
+  console.log('Access granted');
+else
+  console.log('Access denied');
